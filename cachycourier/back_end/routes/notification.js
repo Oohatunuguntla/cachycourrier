@@ -52,9 +52,9 @@ router.post('/sendnotification', async function(req,res,next){
       var ispaid=parceldetails[0]['ispaid']
       const link = `http://${process.env.ipadress}:${process.env.port}`
       
-      var deliveryemail='tunuguntlaooha1234@gmail.com'
-      var deliveryguymobilenumber='9840290558'
-      if(ispaid) {
+      var deliveryemail=parceldetails[0]['deliveryemail']
+      
+      if(ispaid=='True') {
         
         const sendnotificationtodeliveryguy = {
         to: deliveryemail,
@@ -131,7 +131,7 @@ router.post('/sendnotification', async function(req,res,next){
           from: 'oohas1234@gmail.com',
           subject: 'Cachy_courrier parcel',
           //html: `Hello,<br> Please Click on the link to verify your email.<br><a href="${link}">${link}</a>`,
-          html:`Hello ${sourceemail},<br>Your parcelid ${id} is assigned to ${deliveryemail} and contact his mobilenumber:${deliveryguymobilenumber} for urgent queries<br>
+          html:`Hello ${sourceemail},<br>Your parcelid ${id} is assigned to ${deliveryemail}.<br>
           Please Click on the link to track path of your courrier .<br><a href="${link}">${link}</a>`
         }
         transporter.sendMail(sendnotificationtocustomer,async function (err) {

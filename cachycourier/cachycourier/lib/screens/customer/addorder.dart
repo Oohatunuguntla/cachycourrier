@@ -12,6 +12,8 @@ import 'dart:convert' as convert;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:razorpay_flutter/razorpay_flutter.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class addOrderPage extends StatelessWidget{
   final String id;
@@ -581,6 +583,7 @@ class ConfirmOrderPage extends StatefulWidget{
     return _ConfirmOrderPageState(id,sourceaddress,destinationaddress,datetopick,timetopick,parceltype,weight,promocode);
   }
 }
+
 class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
   final String id,sourceaddress,destinationaddress,parceltype,weight,promocode;
    final DateTime datetopick;
@@ -590,13 +593,90 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
 
   String total;
   final double delivery = 100;
+  int totalAmount = 0;
+  int _radiovalue1=-1;
+  Razorpay _razorpay;
+void _handleradiovaluechange1(int value) {
+    setState(() {
+      _radiovalue1 = value;
 
+      switch (_radiovalue1) {
+        case 0:
+          Fluttertoast.showToast(msg: 'Correct !',toastLength: Toast.LENGTH_SHORT);
+       
+          break;
+        case 1:
+          Fluttertoast.showToast(msg: 'Try again !',toastLength: Toast.LENGTH_SHORT);
+          break;
+        case 2:
+          Fluttertoast.showToast(msg: 'Try again !',toastLength: Toast.LENGTH_SHORT);
+          break;
+      }
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _razorpay = Razorpay();
+    _razorpay.on(Razorpay.EVENT_PAYMENT_SUCCESS,_handlePaymentSuccess);
+    _razorpay.on(Razorpay.EVENT_PAYMENT_ERROR,_handlePaymentError);
+    _razorpay.on(Razorpay.EVENT_EXTERNAL_WALLET,_handleExternalWallet);
+  }
+    @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _razorpay.clear();
+  }
+  
+  void openCheckout(totalamount) async{
+    var options = {
+      'key' : 'rzp_test_UpVdqRyHZqXuA9',
+      'amount' : totalamount,
+      'name' : 'CachyCourier',
+      'description' : 'Test Payment',
+      'prefill' : {'contact' : '','email':''},
+      'external':{
+        'wallets': ['paytm']
+      }
+    };
+    
+    try{
+
+      _razorpay.open(options);
+    }
+    catch(e){
+      debugPrint(e);
+    }
+  }
+
+
+  void _handlePaymentSuccess(PaymentSuccessResponse response){
+    Fluttertoast.showToast(msg: "SUCCESS" + response.paymentId);
+    _addorder(id,sourceaddress,destinationaddress,datetopick,timetopick,parceltype,weight,total,promocode,'True');
+
+      Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Order(id)),
+                );
+    
+                     
+  }
+
+    void _handlePaymentError(PaymentFailureResponse response){
+    Fluttertoast.showToast(msg: "ERROR" + response.code.toString()+'-'+response.message);
+  }
+    void _handleExternalWallet(ExternalWalletResponse response){
+    Fluttertoast.showToast(msg: "EXTERNAL WALLET" + response.walletName);
+  }
   @override
   
   Widget build(BuildContext context) {
 
       if (weight=='Upto 5kg'){
           total = '500';
+          
       }
       else if(weight=='Upto 10kg'){
            total = '750';
@@ -622,6 +702,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
   }
 
   Widget _buildBody(BuildContext context) {
+    
     return SingleChildScrollView(
       padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 40.0, bottom: 10.0),
       child: Column(
@@ -663,9 +744,11 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                 selected: true,
                 value: destinationaddress,
                 groupValue: destinationaddress,
-                title: Text('address'),
+                title: Text(destinationaddress),
                 onChanged: (value){},
               ),
+
+             
               // RadioListTile(
               //   selected: false,
               //   value: "New Address",
@@ -702,31 +785,30 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
               width: double.infinity,
               child: Text("Payment Option".toUpperCase())
           ),
-          RadioListTile(
-            groupValue: true,
-            value: true,
-            title: Text("Cash on Delivery"),
-            onChanged: (value){},
+          new Row(children: <Widget>[
+            new Radio(value: 0, groupValue: _radiovalue1, onChanged:_handleradiovaluechange1),
+          new Text('Cash on delivery'),
+              new Radio(value: 1, groupValue: _radiovalue1, onChanged:_handleradiovaluechange1),
+              new Text('Online Payment'),
+          ]
           ),
-          RadioListTile(
-            groupValue: true,
-            value: false,
-            title: Text("PayPal"),
-            onChanged: (value){},
-          ),
-          RadioListTile(
-            groupValue: true,
-            value: false,
-            title: Text("Paytm"),
-            onChanged: (value){},
-          ),
+          
           Container(
             width: double.infinity,
             child: RaisedButton(
               color: Theme.of(context).primaryColor,
               onPressed: () {
-                _addorder(id,sourceaddress,destinationaddress,datetopick,timetopick,parceltype,weight,total,promocode);
-             
+                print('payment confirm');
+              print(_radiovalue1);
+                if(_radiovalue1==1){
+                      openCheckout(int.parse(total)*100);
+                     // _addorder(id,sourceaddress,destinationaddress,datetopick,timetopick,parceltype,weight,total,promocode,'True');
+                }
+                else{
+                   _addorder(id,sourceaddress,destinationaddress,datetopick,timetopick,parceltype,weight,total,promocode,'False');
+                }
+               
+              
               },
               child: Text("Confirm Order", style: TextStyle(
                   color: Colors.white
@@ -737,7 +819,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
       ),
     );
   }
-   void _addorder(id,sourceaddress,destinationaddress,datetopick,timetopick,parceltype,weight,total,promocode) async {
+   void _addorder(id,sourceaddress,destinationaddress,datetopick,timetopick,parceltype,weight,total,promocode,ispaid) async {
     try {
         print('addorderfun');
         print(DotEnv().env['ipadress']);
@@ -761,12 +843,12 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
           //                                           ,
           //                                          
      http.Response resp = await http.post(url,body:{'sourceid':id,'weight':weight,'sourceaddress':sourceaddress,'destinationaddress':destinationaddress,
-                                                         'parceltype':parceltype,'cost':total,'promocode':promocode,'status':'created but not assigned',
+                                                         'parceltype':parceltype,'cost':total,'promocode':promocode,'status':'ongoing',
                                                          'year':datetopick.year.toString(),'month':datetopick.month.toString(),'day':datetopick.day.toString(),
-                                                         'timetopick':storedTime.toString()});
+                                                         'timetopick':storedTime.toString(),'deliveryemail':'saisreenithya@gmail.com','ispaid':ispaid});
         
       if (resp.statusCode == 200) {
-    
+  
       var jsonResponse = convert.jsonDecode(resp.body);
       var url1="http://"+DotEnv().env['ipadress']+":"+DotEnv().env['port']+"/notifications/sendnotification";
       print('$jsonResponse');
@@ -774,11 +856,12 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
        http.Response resp1=await http.post(url1,body:{'parcelid':jsonResponse['parcelid']});
        if(resp.statusCode==200){
           print('notification sent');
-       }
-      Navigator.push(
+            Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Order(id)),
                 );
+       }
+    
 
     // //   Navigator.pushNamed(
     // //   context,
@@ -833,6 +916,46 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
         });
   }
    
+// }
+// class TimeValue {
+//   final int _key;
+//   final String _value;
+//   TimeValue(this._key, this._value);
+// }
+
+// class TimePreferencesWidget extends StatefulWidget {
+//   @override
+//   TimePreferencesWidgetState createState() => TimePreferencesWidgetState();
+// }
+
+// class TimePreferencesWidgetState extends State<TimePreferencesWidget> {
+//   int _currentTimeValue = 1;
+
+//   final _buttonOptions = [
+//     TimeValue(30,  "Online payment"),
+//     TimeValue(60,  "Cash on delivery"),
+
+//   ];
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: ListView(
+//         padding: EdgeInsets.all(8.0),
+//         children: _buttonOptions.map((timeValue) => RadioListTile(
+//           groupValue: _currentTimeValue,
+//           title: Text(timeValue._value),
+//           value: timeValue._key,
+//           onChanged: (val) {
+//             setState(() {
+//               debugPrint('VAL = $val');
+//               _currentTimeValue = val;
+//             });
+//           },
+//         )).toList(),
+//       ),
+//     );
+//   }
 }
 
 class Order extends StatefulWidget {

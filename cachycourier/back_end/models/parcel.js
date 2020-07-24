@@ -42,8 +42,17 @@ const parcelschema=mongoose.Schema({
     promocode:{
         type:String,
     },
+    deliveryemail:{
+        
+            type:String,
+            required:true,
+            
+            match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
+    
+        
+    },
     ispaid:{
-                type:Boolean,
+                type:String
                 
             },
 

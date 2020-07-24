@@ -1,9 +1,12 @@
 var express = require('express');
 var router = express.Router();
-const bcrypt = require('bcryptjs');
+var mongoose = require('mongoose');
 const parcelassignment=require('../models/parcelassignment');
 const parcel=require('../models/parcel');
 const user = require('../models/User');
+const bcrypt = require('bcryptjs');
+const notification=require('../models/notification');
+const querystring = require('querystring');
 router.get("/statsofapp", (req, res,next) => {
     try{
   console.log('statsofapp');
@@ -71,7 +74,40 @@ router.get("/statsofapp", (req, res,next) => {
    
 });
 
+router.get('/statsofdeliveryguy',(req,res,next)=>{
+try{
+    id=req.query['id']
+  id=id.substring(1, id.length-1);
+  var objectId = mongoose.Types.ObjectId(id);
+  // var decoded=decodeURIComponent(req.url)
+  var decoded=querystring.parse(req.url)
+  // console.log(decoded['id'])
 
+  //List parts = req.url.Split(new char[] {'?','&'});
+  user.find({_id:objectId})
+  .exec()
+  .then(
+    userdetails=>{
+      console.log('userdetailssss')
+      console.log(userdetails)
+      //userdetails[0]['email']
+      //
+      parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'0'},function(err,january){
+          if(err){
+              console.log(err);
+          }
+        else{
+            console.log(january);
+        }
+      })
+      
+    })
+}
+catch(error){
+    console.log(error)
+      res.status(500).json({msg:error})
+}
+});
 router.get("/statsofapp", (req, res,next) => {
     try{
   console.log('statsofapp');

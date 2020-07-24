@@ -262,7 +262,7 @@ class Signupstate extends State<Signup> {
          var url="http://"+DotEnv().env['ipadress']+":"+DotEnv().env['port']+"/auth/signup";
          print(url);
      
-    http.Response resp = await http.post(url,body: {'email':_email,'password':_password});  // 10.0.2.2 for emulator
+    http.Response resp = await http.post(url,body: {'email':_email,'password':_password,'usertype':'customer'});  // 10.0.2.2 for emulator
     if (resp.statusCode == 200) {
       var jsonResponse = convert.jsonDecode(resp.body);
       print('$jsonResponse');

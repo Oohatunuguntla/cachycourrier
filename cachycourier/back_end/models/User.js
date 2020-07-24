@@ -20,7 +20,7 @@ const userschema=mongoose.Schema({
     },
     isVerified: { type: Boolean, default: false },
     
-    type:{
+    usertype:{
         type:String,
         
 
