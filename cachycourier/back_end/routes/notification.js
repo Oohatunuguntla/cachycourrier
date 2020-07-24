@@ -75,6 +75,11 @@ router.post('/sendnotification', async function(req,res,next){
           res.status(500).send({ msg: err.message });
         }
         else{
+          sendnotificationtodeliveryguy['html']= `Hello ${deliveryemail},You are assigned to parcelid ${id} and details are as follows:
+        sourceaddress:${sourceaddress}
+        destinationaddress:${destinationaddress}
+        parceltype:${parceltype}
+        Payment is already done`
           newnotify={'email':sendnotificationtodeliveryguy['to'],'notificationtext':sendnotificationtodeliveryguy['html']}
           const newnotification=new notification(newnotify)
           console.log(newnotification)
@@ -96,8 +101,8 @@ router.post('/sendnotification', async function(req,res,next){
         parceltype:${parceltype}<br>
         payment:Cash on delivery<br>
         cost:${cost}<br>
-        Please Click on the link to know route of customer .<br><a href="${link}">route</a>
-      ` 
+        Please tap on the card to know route of customer 
+        `
       }
       transporter.sendMail(sendnotificationtodeliveryguy, async function (err) {
         
@@ -106,6 +111,14 @@ router.post('/sendnotification', async function(req,res,next){
           res.status(500).send({ msg: err.message });
         }
         else{
+          sendnotificationtodeliveryguy['html']=`Hello ${deliveryemail},You are assigned to parcelid ${id} and details are as follows:
+        sourceaddress:${sourceaddress}
+        destinationaddress:${destinationaddress}
+        parceltype:${parceltype}
+        payment:Cash on delivery
+        cost:${cost}
+        Please tap on the card to know route of customer 
+      ` 
           newnotify={'email':sendnotificationtodeliveryguy['to'],'notificationtext':sendnotificationtodeliveryguy['html']}
           const newnotification=new notification(newnotify)
           console.log(newnotification)
@@ -140,6 +153,8 @@ router.post('/sendnotification', async function(req,res,next){
             res.status(500).send({ msg: err.message });
           }
           else{
+            sendnotificationtocustomer['html']=`Hello ${sourceemail},Your parcelid ${id} is assigned to ${deliveryemail}.
+            Please tap on the card to  track path of your courrier .`
             newnotify={'email':sendnotificationtocustomer['to'],'notificationtext':sendnotificationtocustomer['html']}
             const newnotification=new notification(newnotify)
             console.log(newnotification)

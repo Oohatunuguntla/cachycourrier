@@ -33,7 +33,7 @@ class Cachycourier extends StatelessWidget{
             '/resetpage':(BuildContext context)=>ResetPassword(),
            '/mainpage':(BuildContext context)=>MyApp(), 
            '/notificationpage':(BuildContext context)=>NotificationsPage(),
-           '/statsofdeliveryguypage':(BuildContext context)=>StatsofdeliveryguyPage(id)
+           '/statsofdeliveryguypage':(BuildContext context)=>StatsofdeliveryguyPage(stats)
          //   '/addorderpage':(BuildContext context)=>addOrderPage(id),
         //     //'/addorderpage':(BuildContext context)=>addOrderPage(),
         // '/homepagecustomer':(BuildContext context)=>Homepagecustomer(id),

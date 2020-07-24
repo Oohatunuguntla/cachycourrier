@@ -41,6 +41,10 @@ dev_dependencies:
   datetime_picker_formfield: ^0.1.4
   razorpay_flutter:
   fluttertoast:
+  google_maps_flutter: ^0.5.11+1
+  geolocator: ^5.3.1 
+  location: ^2.3.5
+  flutter_polyline_points: ^0.2.1
 
 
 # For information on the generic Dart part of this file, see the

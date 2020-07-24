@@ -203,10 +203,15 @@ class _SettingsOnePageState extends State<settings> {
      print('$jsonResponse');
     
      // Navigator.of(context).pushNamed('/userpage');
-     Navigator.of(context).pushNamed('/statsofdeliveryguypage',
-     arguments:{jsonResponse});
+    //  Navigator.of(context).pushNamed('/statsofdeliveryguypage',
+    //  arguments:{jsonResponse});
             
      
+    
+        Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StatsofdeliveryguyPage(jsonResponse)),
+                );
     }
     else{
       print(resp.statusCode);

@@ -92,12 +92,95 @@ try{
       console.log(userdetails)
       //userdetails[0]['email']
       //
-      parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'0'},function(err,january){
+      parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'1'},function(err,january){
           if(err){
               console.log(err);
           }
         else{
             console.log(january);
+            parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'2'},function(err,febraury){
+            if(err){
+                console.log(err);
+            }
+            else{
+                parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'3'},function(err,march){
+                    if(err){
+                        console.log(err)
+                    }
+                    else{
+                        parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'4'},function(err,april){
+                            if(err){
+                                console.log(err)
+                            }
+                            else{
+                                parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'5'},function(err,may){
+                                    if(err){
+                                        console.log(err)
+                                    }
+                                    else{
+                                        parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'6'},function(err,june){
+                                            if(err){
+                                                  console.log(err)  
+                                            }
+                                            else{
+                                                parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'7'},function(err,july){
+                                                    if(err){
+                                                        console.log(err)
+                                                    }
+                                                    else{
+                                                        parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'8'},function(err,august){
+                                                            if(err){
+                                                                console.log(err)
+                                                            }
+                                                            else{
+                                                                parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'9'},function(err,september){
+                                                                    if(err){
+                                                                        console.log(err)
+                                                                    }
+                                                                    else{
+                                                                        parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'10'},function(err,october){
+                                                                            if(err){
+                                                                                console.log(err)
+                                                                            }
+                                                                            else{
+                                                                                parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'11'},function(err,november){
+                                                                                    if(err){
+                                                                                        console.log(err)
+                                                                                    }
+                                                                                    else{
+                                                                                        parcel.countDocuments({ deliveryemail: 'saisreenithya@gmail.com',year:'2020',month:'12'},function(err,december){
+                                                                                            if(err){
+                                                                                                console.log(err)
+                                                                                            }
+                                                                                            else{
+                                                                                               res.status(200).json({januray:january,febraury:febraury,march:march,april:april,may:may,
+                                                                                                                   june:june,july:july,august:august,september:september,october:october,
+                                                                                                                    november:november,december:december
+                                                                                            
+                                                                                            })
+                                                                                            }
+                                                                                            })
+                                                                                    }
+                                                                                    })
+                                                                            }
+                                                                            })
+                                                                    }
+                                                                    })
+                                                                
+                                                            }
+                                                            })
+                                                    }
+                                                    })
+                                            }
+                                            })
+                                    }
+                                    }) 
+                            }
+                            })
+                    }
+                    })
+            }
+            })
         }
       })
       
@@ -175,35 +258,35 @@ router.get("/statsofapp", (req, res,next) => {
    
 });
 
-router.get('/statsofdeliveryguy', async (req, res, next) => {
-    //required current loginid
-    console.log(req.query['id'])
-    id=req.query['id']
-    id=id.substring(1, id.length-1);
-    var objectId = mongoose.Types.ObjectId(id);
-    // var decoded=decodeURIComponent(req.url)
-    var decoded=querystring.parse(req.url)
-    // console.log(decoded['id'])
+// router.get('/statsofdeliveryguy', async (req, res, next) => {
+//     //required current loginid
+//     console.log(req.query['id'])
+//     id=req.query['id']
+//     id=id.substring(1, id.length-1);
+//     var objectId = mongoose.Types.ObjectId(id);
+//     // var decoded=decodeURIComponent(req.url)
+//     var decoded=querystring.parse(req.url)
+//     // console.log(decoded['id'])
   
-    //List parts = req.url.Split(new char[] {'?','&'});
-    parcelassignment.find({_id:objectId})
-    .exec()
-    .then(
-      userdetails=>{
-        console.log('userdetailssss')
-        console.log(userdetails)
+//     //List parts = req.url.Split(new char[] {'?','&'});
+//     parcelassignment.find({_id:objectId})
+//     .exec()
+//     .then(
+//       userdetails=>{
+//         console.log('userdetailssss')
+//         console.log(userdetails)
         
-        // notification.find({ email: userdetails[0]['email'] })
-        // .exec()
-        // .then(
-        //   notificationss=>{
-        //   console.log(notificationss);
-        //   res.status(200).send({ notification: notificationss });
-        //   })
-      }
-    )
+//         // notification.find({ email: userdetails[0]['email'] })
+//         // .exec()
+//         // .then(
+//         //   notificationss=>{
+//         //   console.log(notificationss);
+//         //   res.status(200).send({ notification: notificationss });
+//         //   })
+//       }
+//     )
   
-  });
+//   });
 
 router.get('/', async (req, res, next) => {
     console.log('statistiics url')

@@ -3,6 +3,8 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/services.dart';
+import 'package:cachycourier/screens/customer/map.dart';
+
 class NotificationsPage extends StatefulWidget{
     @override
   State<StatefulWidget> createState() {
@@ -19,7 +21,7 @@ class _NotificationPageState extends State<NotificationsPage>{
           print('finjson');
           print(arguments);
           print('ddfbn mm');
-          print(arguments['notifications'][0]['notificationtext']);
+         // print(arguments['notifications'][0]['notificationtext']);
     final Button = Material(
       elevation: 5.0,
       borderRadius: BorderRadius.circular(30.0),
@@ -44,9 +46,15 @@ class _NotificationPageState extends State<NotificationsPage>{
     return Card(
            child:ListTile(
              
-             title: new Text(arguments['notifications'][index]['notificationtext'])
+             title: new Text(arguments['notifications'][index]['notificationtext']),
+             onTap: (){ 
+               Route route = MaterialPageRoute(builder: (context) => MappPage(arguments['notifications'][index]['_id'],arguments['notifications'][index]['email']));
+          Navigator.push(context, route); 
+             }, 
+
     
            )
+           
          );
    
     }

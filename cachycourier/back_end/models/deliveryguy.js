@@ -9,16 +9,11 @@ const deliveryguyschema=mongoose.Schema({
         match:/^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/
 
     },
-    id:{
+    location:{
         type:String,
-        required:true,
-        unique:true
+        required:true
 
     },
-    assigned: { type: Boolean, default: false },
-    
    
-
-
 });
 module.exports=mongoose.model('deliveryguy',deliveryguyschema);
