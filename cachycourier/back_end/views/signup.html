@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width-device-width,initial-scale=1">
+    <meta charset="UTF-8">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+      <style type="text/css">
+          #map{ width:530px; height: 200px; }
+        </style>
+     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script>
+    <link rel="stylesheet" href="/main.css">
+  </head>
+  <body>
+    <div id="wrapper">
+      <div class="form-container">
+        <span class="form-heading">SIGN UP</span>
+        <form action="http://localhost:5000/auth/signup" method="POST">
+          <div class="input-group">
+            <div class="fontstyle">Username:</div>
+              <input type="text" name="username" required>
+              <span class="bar"></span>
+            </div>
+            <div class="input-group">
+              <div class="fontstyle">Email:</div>
+            <input type="email" name="email" required>
+            <span class="bar"></span>
+            </div>
+            <div class="input-group">
+              <div class="fontstyle">Password:</div>
+              <input type="password" name="password" >
+               <span class="bar"></span>
+             </div>
+            <div class="input-group">
+              <div class="fontstyle">Phoneno:</div>
+              <input type="text" name="mobilenumber" required>
+              <span class="bar"></span>
+            </div>
+            <div class="input-group">
+              <div class="fontstyle">Street:</div>
+             <input type="text" name="street" required>
+             <span class="bar"></span>
+           </div>
+           <div class="input-group">
+            <div class="fontstyle">City:</div>
+           <input type="text" name="city" required>
+           <span class="bar"></span>
+           </div>
+           <div class="input-group">
+            <div class="fontstyle">State:</div>
+         <input type="text" name="state" required>
+         <span class="bar"></span>
+          </div>
+         <div class="input-group">
+          <div class="fontstyle">Pincode:</div>
+          <input type="text" name="pincode" required>
+          <span class="bar"></span>
+        </div>
+        
+        <div class="fontstyle">Type:</div>
+          <select  class="fontstyle" required name="type">
+            <option value="" class="fontstyle" >select your type</option>
+         <option value="customer" class="fontstyle" >Customer</option>
+          <option value="delivery_guy" class="fontstyle">Delivery_guy</option>
+         
+         </select>
+        
+         <span class="bar"></span>
+         
+         <button type="submit">signup</button>
+            <div class="input-group">      
+            <div class="switch-login fontstyle">Don't have an account?<a href="/auth/login">login</a></div>
+            <div>
+          
+        </form>
+        
+
+     
+    </div>
+
+    <!-- <form action="http://localhost:5000/users/signup" method="POST">
+      user name: <input type="text" name="username"><br>
+      Last name: <input type="text" name="lname"><br>
+      mobilenumber:<input type="number" name="mobilenumber"><br>
+      email:<input type="email" name="email"><br>
+      password:<input type="password" name="password"><br>
+      Street: <input type="text" name="street"><br>
+      city:<input type="text" name="city"><br>
+      state: <input type="text" name="state"><br>
+      pincode:<input type="number" name="pincode"><br>
+      type:
+      <select onchange="yesnoCheck(this);" required name="type">
+          <option value="">select your type</option>
+        <option value="farmer">farmer</option>
+        <option value="agricultureexpert">agricultureexpert</option>
+        <option value="customer">customer</option>
+    </select>
+    
+
+
+
+
+
+    <div id="agricultureexpert" style="display: none;">
+        Qualification:<input type ="text" name="qualification">
+        Upload your qualificatio certificate:<input type="file" name="qualificationcertificate">
+
+    </div>
+
+     <button type="submit">Send to backend</button>
+
+    </form>
+
+
+  </body>
+--->
+
+  <script>
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("myBtn");
+
+
+var span = document.getElementsByClassName("close")[0];
+
+btn.onclick = function() {
+  modal.style.display = "block";
+}
+
+span.onclick = function() {
+  modal.style.display = "none";
+}
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
+    function yesnoCheck(that) {
+    if (that.value == "farmer") {
+        document.getElementById("farmer").style.display = "block";
+        document.getElementById("agricultureexpert").style.display = "none";
+
+    } 
+    else if (that.value == "agricultureexpert") {
+        document.getElementById("agricultureexpert").style.display = "block";
+        document.getElementById("farmer").style.display = "none";
+    } 
+    else if (that.value == "customer") {
+        document.getElementById("agricultureexpert").style.display = "none";
+        document.getElementById("farmer").style.display = "none";}
+
+}
+
+
+var map; 
+var marker = false;  
+        
+function initMap() {
+
+  
+    var centerOfMap = new google.maps.LatLng(52.357971, -6.516758);
+    var options = {
+      center: centerOfMap, 
+      zoom: 7 
+    };
+
+  
+    map = new google.maps.Map(document.getElementById('map'), options);
+
+  
+    google.maps.event.addListener(map, 'click', function(event) {                
+        
+        var clickedLocation = event.latLng;
+        
+        if(marker === false){
+    
+            marker = new google.maps.Marker({
+                position: clickedLocation,
+                map: map,
+                draggable: true 
+            });
+    
+            google.maps.event.addListener(marker, 'dragend', function(event){
+                markerLocation();
+            });
+        } else{
+          
+            marker.setPosition(clickedLocation);
+        }
+  
+        markerLocation();
+    });
+}
+      
+function markerLocation(){
+    var currentLocation = marker.getPosition();
+    document.getElementById('lat').value = currentLocation.lat(); 
+    document.getElementById('lng').value = currentLocation.lng(); 
+}
+        
+google.maps.event.addDomListener(window, 'load', initMap);
+
+
+  </script> 
+</body>
+  </html>

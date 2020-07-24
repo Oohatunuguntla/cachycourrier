@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<body>
+    <h1>http://<%= process.env.ipadress %>:<%= process.env.port %>/auth/reset/<%= data.token %></h1>
+    <form action="http://<%= process.env.ipadress %>:<%= process.env.port %>/auth/reset/<%= data.token %>" method="POST">
+        New Password
+        <input type="password" name="password">
+        <button type="submit"></button>
+    </form>
+</body>
+</html>

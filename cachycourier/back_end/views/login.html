@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+      <meta name="viewport" content="width-device-width,initial-scale=1">
+      <meta charset="UTF-8">
+      
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  
+      <link rel="stylesheet" href="/main1.css">
+    </head>
+    <body>
+       <div class="form-container">
+         <form action="http://localhost:5000/auth/login" method="POST">
+           <div class="title">
+             <span>LOGIN</span>
+
+           </div>
+           <div class="input-group">
+              <div class="fontstyle">Email:</div>
+                <input type="email" name="email" required>
+                <span class="bar"></span>
+              </div>
+              <div class="input-group">
+                  <div class="fontstyle">Password:</div>
+                    <input type="password" name="password" required>
+                    <span class="bar"></span>
+                  </div>
+                  <div class="fontstyle">Type:</div>
+          <select  class="fontstyle" required name="type">
+            <option value="" class="fontstyle" >select your type</option>
+         <option value="customer" class="fontstyle" >Customer</option>
+          <option value="delivery_guy" class="fontstyle">Delivery_guy</option>
+         
+         </select>
+         <span class="bar"></span>
+         <button type="submit">login</button>
+                  
+               <div class="input-group">      
+            <div class="switch-login fontstyle">Don't have an account?<a href="/auth/signup">register</a></div>
+            <div>
+              <div class="input-group">      
+                <div class="switch-login fontstyle"><a href="/auth/forgot">forgot password?</a></div>
+                <div>
+          
+                      
+         </form>
+       </div>
+
+
+
+   
+     -->
+  </body>
+</html>
